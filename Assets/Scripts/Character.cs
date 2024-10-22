@@ -2,4 +2,5 @@
 {
     public abstract void Attack();
     public abstract void Jump();
+    public abstract void Move();
 }

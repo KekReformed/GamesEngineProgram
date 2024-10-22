@@ -16,4 +16,9 @@
     {
         character.Jump();
     }
+    
+    public override void Move()
+    {
+        character.Move();
+    }
 }
