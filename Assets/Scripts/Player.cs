@@ -1,12 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
+[System.Serializable]
 public class Player : Character 
 {
     private Rigidbody2D _rb;
     private float _acceleration;
     private float _deceleration;
     private float _speedCap;
+    private LayerMask _playerLayer;
 
     public Player(Rigidbody2D rb, float acceleration, float decceleration, float speedCap)
     {
@@ -14,13 +16,33 @@ public class Player : Character
         _acceleration = acceleration;
         _deceleration = decceleration;
         _speedCap = speedCap;
+        
+        _playerLayer = LayerMask.GetMask("Player");
+
+        var myLayer = (1 << rb.gameObject.layer) & _playerLayer;
+        
+        if(myLayer == 0) Debug.LogError("You need to add your player character to a layer called Player!");
     }
+
+    public virtual bool GroundCheck(Transform transform)
+    {
+        RaycastHit2D hit;
+        hit = Physics2D.BoxCast(transform.position, transform.localScale, transform.rotation.z, Vector2.down,
+            1f, ~_playerLayer);
+        return hit;
+    }
+    
     public override void Attack()
     {
         Debug.Log("First Attack!");
     }
-    public override void Jump(){
+    public override void Jump(Transform transform){
         Debug.Log("First Jump!");
+        if (GroundCheck(transform))
+        {
+            Debug.Log("Can jump");
+        }
+        else Debug.Log("Can't jump");
     }
 
     public override void Move()

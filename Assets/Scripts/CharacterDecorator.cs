@@ -1,4 +1,6 @@
-﻿public abstract class CharacterDecorator : Character
+﻿using UnityEngine;
+
+public abstract class CharacterDecorator : Character
 {
     protected Character character;
 
@@ -12,9 +14,9 @@
         character.Attack();
     }
 
-    public override void Jump()
+    public override void Jump(Transform transform)
     {
-        character.Jump();
+        character.Jump(transform);
     }
     
     public override void Move()

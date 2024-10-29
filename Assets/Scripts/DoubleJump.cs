@@ -7,9 +7,9 @@ public class DoubleJump : CharacterDecorator
         
     }
 
-    public override void Jump()
+    public override void Jump(Transform transform)
     {
-        base.Jump();
+        base.Jump(transform);
         Debug.Log("Double Jump!");
     }
 }

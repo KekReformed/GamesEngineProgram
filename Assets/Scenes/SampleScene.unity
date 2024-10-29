@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 1542388121}
   - component: {fileID: 1542388120}
   - component: {fileID: 1542388125}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 1781397428}
   - component: {fileID: 1781397427}
   - component: {fileID: 1781397426}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
