@@ -13,9 +13,9 @@ public class PlayerManager : MonoBehaviour
     
     private Character player;
 
-    private void Awake()
+    private void Start()
     {
-        player = new Player(GetComponent<Rigidbody2D>(), acceleration, deceleration);
+        player = new Player(gameObject.GetComponent<Rigidbody2D>(), acceleration, deceleration, speedCap);
     }
 
     public void Update()

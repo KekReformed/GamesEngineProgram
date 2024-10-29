@@ -8,9 +8,12 @@ public class Player : Character
     private float _deceleration;
     private float _speedCap;
 
-    public Player(Rigidbody2D rb, float acceleration, float decceleration)
+    public Player(Rigidbody2D rb, float acceleration, float decceleration, float speedCap)
     {
-        rb = _rb;
+        _rb = rb;
+        _acceleration = acceleration;
+        _deceleration = decceleration;
+        _speedCap = speedCap;
     }
     public override void Attack()
     {
@@ -22,9 +25,10 @@ public class Player : Character
 
     public override void Move()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0)
+        var horizontalInput = Input.GetAxisRaw("Horizontal");
+        if (horizontalInput != 0)
         {
-            _rb.velocity += new Vector2(_acceleration * Input.GetAxisRaw("Horizontal") * Time.deltaTime, 0);
+            _rb.velocity += new Vector2(_acceleration * horizontalInput * Time.deltaTime, 0);
             _rb.velocity = new Vector2(Mathf.Clamp(_rb.velocity.x,-_speedCap,_speedCap), _rb.velocity.y);
         }
         else
