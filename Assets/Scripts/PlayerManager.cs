@@ -9,6 +9,8 @@ using Object = System.Object;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerManager : MonoBehaviour
 {
+    public static PlayerManager main;
+    
     [Header("Base Movement")]
     [SerializeField] private float acceleration;
     [SerializeField] private float deceleration;
@@ -19,6 +21,12 @@ public class PlayerManager : MonoBehaviour
     private Character _player;
 
     private Player _ply;
+
+    private void Awake()
+    {
+        if(main == null) main = this;
+    }
+
     private void Start()
     {
         _player = new Player(gameObject.GetComponent<Rigidbody2D>(), acceleration, deceleration, speedCap, jumpHeight,groundCheckDist);
