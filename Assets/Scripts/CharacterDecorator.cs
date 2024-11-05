@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[System.Serializable]
 public abstract class CharacterDecorator : Character
 {
     protected Character character;
