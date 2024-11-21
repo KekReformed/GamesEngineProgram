@@ -9,10 +9,10 @@ public class Player : Character
     private float _deceleration;
     private float _speedCap;
     private float _jumpHeight;
-    private float _groundCheckDist;
-    private LayerMask _playerLayer;
+    readonly int _playerLayer;
 
-    public Player(Rigidbody2D rb, float acceleration, float decceleration, float speedCap, float jumpHeight, float groundCheckDist)
+
+    public Player(Rigidbody2D rb, float acceleration, float decceleration, float speedCap, float jumpHeight)
     {
         _rb = rb;
         _acceleration = acceleration;
@@ -20,19 +20,10 @@ public class Player : Character
         _speedCap = speedCap;
         _playerLayer = LayerMask.GetMask("Player");
         _jumpHeight = jumpHeight;
-        _groundCheckDist = groundCheckDist;
         
         var myLayer = (1 << rb.gameObject.layer) & _playerLayer;
         
         if(myLayer == 0) Debug.LogError("You need to add your player character to a layer called Player!");
-    }
-
-    public virtual bool GroundCheck(Transform transform)
-    {
-        RaycastHit2D hit;
-        hit = Physics2D.BoxCast(transform.position, transform.localScale, transform.rotation.z, Vector2.down,
-            _groundCheckDist, ~_playerLayer);
-        return hit;
     }
     
     public override void Attack()
@@ -40,12 +31,12 @@ public class Player : Character
         Debug.Log("First Attack!");
     }
     public override void Jump(Transform transform){
-        if (GroundCheck(transform))
-        {
-            _rb.velocity += new Vector2(_rb.velocity.x, _jumpHeight);
-        }
+        _rb.velocity += new Vector2(_rb.velocity.x, _jumpHeight);
     }
-
+    public override void OnGround()
+    {
+        grounded = true;
+    }
     public override void Move()
     {
         var horizontalInput = Input.GetAxisRaw("Horizontal");

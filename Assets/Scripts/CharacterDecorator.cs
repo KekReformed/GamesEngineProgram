@@ -15,6 +15,11 @@ public abstract class CharacterDecorator : Character
         character.Attack();
     }
 
+    public override void OnGround()
+    {
+        character.OnGround();
+    }
+    
     public override void Jump(Transform transform)
     {
         character.Jump(transform);

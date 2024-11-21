@@ -10,8 +10,9 @@ using Object = System.Object;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager main;
-    
+
     [Header("Base Movement")]
+    private LayerMask _playerLayer;
     [SerializeField] private float acceleration;
     [SerializeField] private float deceleration;
     [SerializeField] private float speedCap;
@@ -26,12 +27,22 @@ public class PlayerManager : MonoBehaviour
     {
         if(main == null) main = this;
     }
+    
+    public bool GroundCheck(Transform transform)
+    {
+        RaycastHit2D hit;
+        hit = Physics2D.BoxCast(transform.position, transform.localScale, transform.rotation.z, Vector2.down,
+            groundCheckDist, ~_playerLayer);
+        return hit;
+    }
 
     private void Start()
     {
-        _player = new Player(gameObject.GetComponent<Rigidbody2D>(), acceleration, deceleration, speedCap, jumpHeight,groundCheckDist);
+        _playerLayer = LayerMask.GetMask("Player");
+        
+        _player = new Player(gameObject.GetComponent<Rigidbody2D>(), acceleration, deceleration, speedCap, jumpHeight);
         _ply = _player as Player;
-        AddUpgrade<DoubleJump>();
+        AddUpgrade<DoubleJumpExample>();
     }
 
     //Activator lets us create an instance of a class at runtime with dynamic types, allowing us to use type constraints to prevent use of anything thats not a valid decorator
@@ -45,7 +56,8 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) _player.Jump(transform);
         if (Input.GetKeyDown(KeyCode.F)) _player.Attack();
-        if (Input.GetKeyDown(KeyCode.U)) _player = new DoubleJump(_player);
+        _player.grounded = GroundCheck(transform);
+        if(_player.grounded) _player.OnGround();
         _player.Move();
     }
 }
