@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public abstract class Character
+public abstract class Character 
 {
-    public bool grounded;
-    public abstract void OnGround();
-    public abstract void Attack();
-    public abstract void Jump(Transform transform);
+    [HideInInspector] public Rigidbody2D rb;
+    [HideInInspector] public Transform transform;
+    public float acceleration;
+    public float deceleration;
+    public float speedCap;
+    
     public abstract void Move();
+    public abstract void Update();
+    public abstract void Start();
 }

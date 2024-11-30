@@ -10,19 +10,14 @@ public abstract class CharacterDecorator : Character
         this.character = character;
     }
 
-    public override void Attack()
+    public override void Start()
     {
-        character.Attack();
+        character.Start();
     }
 
-    public override void OnGround()
+    public override void Update()
     {
-        character.OnGround();
-    }
-    
-    public override void Jump(Transform transform)
-    {
-        character.Jump(transform);
+        character.Update();
     }
     
     public override void Move()

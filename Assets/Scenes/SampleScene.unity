@@ -353,11 +353,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f8c9b39e4390704eb6124b0d9e784d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 10
-  deceleration: 10
-  speedCap: 5
-  jumpHeight: 5
-  groundCheckDist: 0.01
+  player:
+    rb: {fileID: 0}
+    transform: {fileID: 0}
+    acceleration: 5
+    deceleration: 5
+    speedCap: 5
+    _jumpHeight: 5
+    groundCheckDist: 0.5
 --- !u!1 &1781397425
 GameObject:
   m_ObjectHideFlags: 0

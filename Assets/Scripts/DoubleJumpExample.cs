@@ -1,28 +1,32 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
+[System.Serializable]
 public class DoubleJumpExample : CharacterDecorator
-{
-    public int ExtraJumps = 1;
-    public int ExtraJumpMax = 1;
+{ 
+    public int extraJumps = 1;
+    public int extraJumpMax = 1;
+    Player _player;
+    
     public DoubleJumpExample(Character character) : base(character)
     {
-        
+        _player = character as Player;
     }
     
-    public override void Jump(Transform transform)
+    public void Jump(Transform transform)
     {
-        if (grounded) base.Jump(transform);
-        else if (ExtraJumps > 0)
+        if (_player.GroundCheck()) _player.Jump();
+        else if (extraJumps > 0)
         {
-            base.Jump(transform);
-            ExtraJumps -= 1;
-            Debug.Log(ExtraJumps);
+            _player.Jump();
+            extraJumps -= 1;
+            Debug.Log(extraJumps);
         }
     }
 
-    public override void OnGround()
+    public override void Update()
     {
-        base.OnGround();
-        ExtraJumps = ExtraJumpMax;
+        base.Update();
+        if (_player.GroundCheck()) extraJumps = extraJumpMax;
     }
 }

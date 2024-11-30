@@ -1,55 +1,52 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class Player : Character 
 {
-    private Rigidbody2D _rb;
-    private float _acceleration;
-    private float _deceleration;
-    private float _speedCap;
-    private float _jumpHeight;
-    readonly int _playerLayer;
-
-
-    public Player(Rigidbody2D rb, float acceleration, float decceleration, float speedCap, float jumpHeight)
+    private LayerMask _playerLayer;
+    [SerializeField] private float _jumpHeight;
+    [SerializeField][Range(0.01f,0.5f)] private float groundCheckDist;
+    
+    public override void Start()
     {
-        _rb = rb;
-        _acceleration = acceleration;
-        _deceleration = decceleration;
-        _speedCap = speedCap;
         _playerLayer = LayerMask.GetMask("Player");
-        _jumpHeight = jumpHeight;
         
-        var myLayer = (1 << rb.gameObject.layer) & _playerLayer;
+        int myLayer = (1 << rb.gameObject.layer) & _playerLayer;
         
         if(myLayer == 0) Debug.LogError("You need to add your player character to a layer called Player!");
     }
     
-    public override void Attack()
+    public void Jump(){
+        rb.velocity += new Vector2(0, _jumpHeight);
+    }
+    
+    public bool GroundCheck()
     {
-        Debug.Log("First Attack!");
+        RaycastHit2D hit;
+        hit = Physics2D.BoxCast(transform.position, transform.localScale, transform.rotation.z, Vector2.down,
+            groundCheckDist, ~_playerLayer);
+        return hit;
     }
-    public override void Jump(Transform transform){
-        _rb.velocity += new Vector2(_rb.velocity.x, _jumpHeight);
-    }
-    public override void OnGround()
-    {
-        grounded = true;
-    }
+    
     public override void Move()
     {
-        var horizontalInput = Input.GetAxisRaw("Horizontal");
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
         if (horizontalInput != 0)
         {
-            _rb.velocity += new Vector2(_acceleration * horizontalInput * Time.deltaTime, 0);
-            _rb.velocity = new Vector2(Mathf.Clamp(_rb.velocity.x,-_speedCap,_speedCap), _rb.velocity.y);
+            rb.velocity += new Vector2(acceleration * horizontalInput * Time.deltaTime, 0);
+            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x,-speedCap,speedCap), rb.velocity.y);
         }
         else
         {
-            Vector2 moveChange = _rb.velocity + new Vector2(-_deceleration * Mathf.Sign(_rb.velocity.x) * Time.deltaTime, 0);
-            if (Mathf.Sign(_rb.velocity.x) != Mathf.Sign(moveChange.x)) moveChange.x = 0;
-            _rb.velocity = moveChange;
+            Vector2 moveChange = rb.velocity + new Vector2(-deceleration * Mathf.Sign(rb.velocity.x) * Time.deltaTime, 0);
+            if (Mathf.Sign(rb.velocity.x) != Mathf.Sign(moveChange.x)) moveChange.x = 0;
+            rb.velocity = moveChange;
         };
+    }
+    
+    public override void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) Jump();
+        Move();
     }
 }
