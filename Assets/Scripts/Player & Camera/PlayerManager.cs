@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager main;
     
     Character _playerCharacter;
-    [SerializeField] Player player;
+    public Player player;
 
     private void Awake()
     {
@@ -29,16 +29,24 @@ public class PlayerManager : MonoBehaviour
         _playerCharacter = Activator.CreateInstance(typeof(T), _playerCharacter) as Character;
     }
 
+    public void AddUpgradeAtRun(Type type)
+    {
+        _playerCharacter = Activator.CreateInstance(type, _playerCharacter) as Character;
+    }
+
     public void Start()
     {
         _playerCharacter.transform = transform;
         _playerCharacter.rb = gameObject.GetComponent<Rigidbody2D>();
         
         _playerCharacter.Start();
+        AddUpgrade<JumpUpgrade>();
     }
     
     public void Update()
     {
         _playerCharacter.Update();
+        if (Input.GetKeyDown(KeyCode.Space)) _playerCharacter.Jump();
+        _playerCharacter.Move();
     }
 }

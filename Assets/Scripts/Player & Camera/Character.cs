@@ -10,6 +10,7 @@ public abstract class Character
     public float speedCap;
     
     public abstract void Move();
+    public abstract void Jump();
     public abstract void Update();
     public abstract void Start();
 }

@@ -15,6 +15,11 @@ public abstract class CharacterDecorator : Character
         character.Start();
     }
 
+    public override void Jump()
+    {
+        character.Jump();
+    }
+
     public override void Update()
     {
         character.Update();

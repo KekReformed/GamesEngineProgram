@@ -16,14 +16,14 @@ public class Player : Character
         if(myLayer == 0) Debug.LogError("You need to add your player character to a layer called Player!");
     }
     
-    public void Jump(){
+    public override void Jump(){
         rb.velocity += new Vector2(0, _jumpHeight);
     }
     
     public bool GroundCheck()
     {
         RaycastHit2D hit;
-        hit = Physics2D.BoxCast(transform.position, transform.localScale, transform.rotation.z, Vector2.down,
+        hit = Physics2D.BoxCast(transform.position, transform.localScale*0.5f, transform.rotation.z, Vector2.down,
             groundCheckDist, ~_playerLayer);
         return hit;
     }
@@ -46,7 +46,6 @@ public class Player : Character
     
     public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) Jump();
-        Move();
+        
     }
 }
