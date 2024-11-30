@@ -47,6 +47,7 @@ public class PlayerManager : MonoBehaviour
     {
         _playerCharacter.Update();
         if (Input.GetKeyDown(KeyCode.Space)) _playerCharacter.Jump();
+        if (Input.GetKeyDown(KeyCode.F)) _playerCharacter.Attack();
         _playerCharacter.Move();
     }
 }

@@ -20,6 +20,11 @@ public abstract class CharacterDecorator : Character
         character.Jump();
     }
 
+    public override void Attack()
+    {
+        character.Attack();
+    }
+
     public override void Update()
     {
         character.Update();

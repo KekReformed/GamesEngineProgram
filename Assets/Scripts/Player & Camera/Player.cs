@@ -1,15 +1,26 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class Player : Character 
 {
     private LayerMask _playerLayer;
-    [SerializeField] private float _jumpHeight;
+    [FormerlySerializedAs("_jumpHeight")] public float jumpHeight;
     [SerializeField][Range(0.01f,0.5f)] private float groundCheckDist;
+    [SerializeField] float dashSpeed;
+    [SerializeField] float dashCooldown;
+    [SerializeField] float dashAttackLingerTime;
+    float _dashClock;
+    float _origSpeedCap;
+    Vector3 _origPoint;
+    public bool attacking;
     
     public override void Start()
     {
         _playerLayer = LayerMask.GetMask("Player");
+
+        _origSpeedCap = speedCap;
+        _origPoint = transform.position;
         
         int myLayer = (1 << rb.gameObject.layer) & _playerLayer;
         
@@ -17,7 +28,21 @@ public class Player : Character
     }
     
     public override void Jump(){
-        rb.velocity += new Vector2(0, _jumpHeight);
+        rb.velocity += new Vector2(0, jumpHeight);
+    }
+
+    public override void Attack()
+    {
+        if (dashCooldown > _dashClock) return;
+        rb.velocity = new Vector2(rb.velocity.x + dashSpeed * Mathf.Sign(Input.GetAxisRaw("Horizontal")), rb.velocity.y);
+        _dashClock = 0;
+        speedCap = dashSpeed;
+        attacking = true;
+    }
+
+    public void Respawn()
+    {
+        transform.position = _origPoint;
     }
     
     public bool GroundCheck()
@@ -46,6 +71,13 @@ public class Player : Character
     
     public override void Update()
     {
+        _dashClock += Time.deltaTime;
+        if (_dashClock > dashAttackLingerTime && attacking)
+        {
+            attacking = false;
+            speedCap = _origSpeedCap;
+        }
         
+        if(transform.position.y < -100) Respawn();
     }
 }

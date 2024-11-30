@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MovingPlatform : Platform
 {
@@ -9,7 +10,7 @@ public class MovingPlatform : Platform
     [SerializeField] float speed = 1;
     Vector3 _endPoint;
     Vector3 _startPoint;
-    [HideInInspector] public bool _moving;
+    [FormerlySerializedAs("_moving")] [HideInInspector] public bool moving;
     [SerializeField] bool automatic;
     bool _movingToStart;
     
@@ -32,8 +33,8 @@ public class MovingPlatform : Platform
         }
         else
         {
-            if(_moving && Vector2.Distance(transform.position, _endPoint) > .1f) goToEndPoint();
-            if (!_moving && Vector2.Distance(transform.position, _startPoint) > .1f) goToStartPoint();
+            if(moving && Vector2.Distance(transform.position, _endPoint) > .1f) goToEndPoint();
+            if (!moving && Vector2.Distance(transform.position, _startPoint) > .1f) goToStartPoint();
         }
     }
 

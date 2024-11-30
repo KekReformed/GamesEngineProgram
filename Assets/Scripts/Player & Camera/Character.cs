@@ -11,6 +11,7 @@ public abstract class Character
     
     public abstract void Move();
     public abstract void Jump();
+    public abstract void Attack();
     public abstract void Update();
     public abstract void Start();
 }
